@@ -120,7 +120,7 @@ export default function Home() {
                   return (
                     <li key={p.name}>
                       <Link
-                        href={`/pokemon?name=${encodeURIComponent(p.name)}`}
+                        href={`/pokemon/${encodeURIComponent(p.name)}`}
                         className="flex flex-col items-center justify-center gap-2 rounded border bg-white hover:bg-gray-100 transition w-32 h-20 mx-auto"
                       >
                         <div className="h-8 w-8 shrink-0">

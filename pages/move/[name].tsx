@@ -1,15 +1,13 @@
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import type { Move } from "../data/models/move";
-import { formatFlavorText } from "../utils/flavor-text-formatter";
+import type { Move } from "../../data/models/move";
+import { formatFlavorText } from "../../utils/flavor-text-formatter";
 
 type Props = { move: Move };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const raw = Array.isArray(context.query.move)
-    ? context.query.move[0]
-    : context.query.move;
-  const moveName = raw?.toString().trim().toLowerCase() ?? "";
+  const raw = typeof context.params?.name === "string" ? context.params.name : "";
+  const moveName = raw.trim().toLowerCase();
 
   if (!moveName) return { notFound: true };
 

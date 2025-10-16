@@ -2,9 +2,9 @@
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import type { Pokemon } from "../data/models/pokemon";
-import type { PokemonSpecies } from "../data/models/pokemon-species";
-import { formatFlavorText } from "../utils/flavor-text-formatter";
+import type { Pokemon } from "../../data/models/pokemon";
+import type { PokemonSpecies } from "../../data/models/pokemon-species";
+import { formatFlavorText } from "../../utils/flavor-text-formatter";
 import Image from "next/image";
 
 
@@ -95,7 +95,7 @@ const PokemonDetailPage: NextPage<Props> = ({ pokemon, species }) => {
         <div className="flex flex-wrap gap-2">
           {moves.map((mv) => (
             <Link
-            href={`/move_det?move=${encodeURIComponent(mv)}`}
+            href={`/move/${encodeURIComponent(mv)}`}
             className="block w-full rounded border px-3 py-1 text-left hover:bg-gray-100"
             key={mv}
             >
@@ -110,7 +110,8 @@ const PokemonDetailPage: NextPage<Props> = ({ pokemon, species }) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const name =
-    typeof context.query.name === "string" ? context.query.name.trim() : "";
+  typeof context.params?.name === "string" ? context.params.name.trim() : "";
+
 
   if (!name) return { notFound: true };
 
