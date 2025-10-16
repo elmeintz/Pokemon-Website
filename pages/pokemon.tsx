@@ -25,12 +25,11 @@ const PokemonDetailPage: NextPage<Props> = ({ pokemon, species }) => {
   const moves = pokemon.moves.map((m) => m.move.name);
 
   const rawFlavor =
-    species.flavor_text_entries.find((f) => f.language.name === "en")?.flavor_text ??
-    species.flavor_text_entries[0]?.flavor_text ??
-    "";
-  const description = formatFlavorText
-    ? formatFlavorText(rawFlavor)
-    : rawFlavor.replace(/\s+/g, " ").trim();
+  species.flavor_text_entries.find((f) => f.language.name === "en")?.flavor_text ??
+  "";
+
+  const description = formatFlavorText(rawFlavor); // formats \n, \f, extra spaces, etc.
+
 
   const evolvesFrom = species.evolves_from_species?.name ?? null;
 
@@ -49,8 +48,8 @@ const PokemonDetailPage: NextPage<Props> = ({ pokemon, species }) => {
             <Image
               src={imageUrl}
               alt={`${pokemon.name} sprite`}
-              width={128}          // 32 * 4 (since Tailwind’s w-32 = 8rem = 128px)
-              height={128}         // same for h-32
+              width={128}          
+              height={128}         
               className="object-contain"
             />
           )}

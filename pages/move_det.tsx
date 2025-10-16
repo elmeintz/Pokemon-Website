@@ -1,6 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import type { Move } from "../data/models/move";
+import { formatFlavorText } from "../utils/flavor-text-formatter";
 
 type Props = { move: Move };
 
@@ -52,16 +53,14 @@ const MoveDetailPage: NextPage<Props> = ({ move }) => {
           </p>
         </div>
       </header>
-
-      {flavorEN?.flavor_text && (
-        <section>
-          <h2 className="text-xl font-semibold mb-2">Flavor</h2>
-          <p className="leading-relaxed whitespace-pre-line">
-            {flavorEN.flavor_text}
-          </p>
-        </section>
-      )}
-
+        {flavorEN?.flavor_text && (
+          <section>
+            <h2 className="text-xl font-semibold mb-2">Flavor</h2>
+            <p className="leading-relaxed text-gray-800">
+              {formatFlavorText(flavorEN.flavor_text)}
+            </p>
+          </section>
+        )}
       <section>
         <h2 className="text-xl font-semibold mb-2">Base Stats</h2>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">

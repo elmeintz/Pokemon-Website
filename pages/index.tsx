@@ -29,20 +29,28 @@ export default function Home() {
   });
 
   // client side sprites from /pokemon/{name}
-  const fetchSprites = async (names: string[]): Promise<Record<string, string>> => {
+    const fetchSprites = async (names: string[]): Promise<Record<string, string>> => {
     const out: Record<string, string> = {};
-    await Promise.allSettled(
-      names.map(async (name) => {
-        const res = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(name)}`
-        );
-        if (!res.ok) return;
-        const data = (await res.json()) as Pokemon;
-        out[name] = data.sprites.front_default ?? "";
-      })
-    );
+    const CHUNK = 10;
+
+    for (let i = 0; i < names.length; i += CHUNK) {
+      const slice = names.slice(i, i + CHUNK);
+      const results = await Promise.allSettled(
+        slice.map((name) =>
+          fetch(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(name)}`)
+            .then((r) => (r.ok ? r.json() : null))
+        )
+      );
+      results.forEach((res, idx) => {
+        const name = slice[idx];
+        if (res.status === "fulfilled" && res.value) {
+          out[name] = (res.value as Pokemon).sprites.front_default ?? "";
+        }
+      });
+    }
     return out;
   };
+
 
   const {
     data: spriteMap,
