@@ -20,9 +20,13 @@ const PokemonDetailPage: NextPage<Props> = ({ pokemon, species }) => {
   //use the router to go back to home page
 
   const imageUrl = pokemon.sprites.front_default ?? "";
-  const types = pokemon.types.map((t) => t.type.name);
   const stats = pokemon.stats.map((s) => ({ name: s.stat.name, value: s.base_stat }));
-  const moves = pokemon.moves.map((m) => m.move.name);
+  const types = pokemon.types.map(
+  (t) => t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1));
+  const moves = pokemon.moves.map(
+  (m) => m.move.name.charAt(0).toUpperCase() + m.move.name.slice(1)
+  );
+
 
   const rawFlavor =
   species.flavor_text_entries.find((f) => f.language.name === "en")?.flavor_text ??
